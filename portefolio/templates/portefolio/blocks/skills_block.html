@@ -1,0 +1,48 @@
+<div class="flex flex-row justify-center">
+    <div class="w-full lg:w-4/5 backdrop-blur-md md:rounded-lg
+                lg:rounded-lg p-3 m-3 saturate-180 bg-gradient-to-tr
+                from-light_grad_f to-light_grad_t border-1 border-border_glass flex
+                flex-col justify-start dark:from-dark_grad_f dark:to-dark_grad_t
+                opacity-80 hover:saturate-200 hover:opacity-90 transition-all ease-in-out duration-300">
+        <h2 class="text-6xl lg:text-3xl text-light_dark font-semibold mb-4 text-center
+        dark:text-dark_dark">
+            Compétences techniques
+        </h2>
+        <div class="flex flex-col lg:flex-row flex-wrap justify-center gap-4">
+            {% for skill in skills %}
+                {% if skill.visible %}
+                    <div class="flex flex-col justify-start {{ skill.get_lang }} border-2
+                     border-light_light dark:border-dark_light rounded-lg p-5 w-full lg:w-1/5"
+                         data-display-type="flex">
+                        <div class="flex items-center justify-center">
+                            <div class="flex items-center justify-center w-16 h-16">
+                                <i class="{{ skill.icon }} text-6xl lg:text-3xl text-light_medium dark:text-dark_medium">
+                                </i>
+                            </div>
+                            <div class="flex flex-col justify-center">
+                                <h3 class="text-3xl lg:text-2xl font-semibold text-light_dark dark:text-dark_dark m-2 mr-4">
+                                    {{ skill.name }}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <span class="text-4xl lg:text-xl text-light_text font-thin dark:text-dark_text">
+                                {{ skill.formatted_skills | safe }}
+                            </span>
+                            {% if skill.got_projects %}
+                                <h3 class="text-5xl lg:text-xl font-semibold text-light_dark dark:text-dark_dark m-1 mt-3 {{ skill.get_lang }}">
+                                    Projets réalisés avec :
+                                </h3>
+                                <ul>
+                                    {% for project in skill.get_projects %}
+                                        <li class="text-light_text dark:text-dark_text text-4xl lg:text-xl">- {{ project }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

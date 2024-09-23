@@ -1,36 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+    box-sizing: border-box;
+}
+
+@layer base {
+    @font-face {
+        font-family: 'Oswald';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url('https://fonts.gstatic.com/s/oswald/v36/TK3_WkUHHAIjg75cFRf3bXL8LICs1_FvsUZiZQ.woff2') format('woff2');
+    }
+}
+
 body{
-	margin:0;
-	padding:0;
-    background: #e2d1c3 url('https://les-roseaux.dev/images/bg_blue6.png') repeat 0 0;
-	-webkit-animation: 10s linear 0s reverse none infinite animate;
-	-moz-animation: 10s linear 0s reverse none infinite animate;
-	-ms-animation: 10s linear 0s reverse none infinite animate;
-	-o-animation: 10s linear 0s reverse none infinite animate;
-	animation: 10s linear 0s reverse none infinite animate;
-
+    margin:0;
+    padding:0;
+    background: rgba(147,208,231,0.78) url('https://les-roseaux.dev/images/TriangleBleuTresClair.png') repeat 0 0;
+    -webkit-animation: 10s linear 0s reverse none infinite animate;
+    -moz-animation: 10s linear 0s reverse none infinite animate;
+    -ms-animation: 10s linear 0s reverse none infinite animate;
+    -o-animation: 10s linear 0s reverse none infinite animate;
+    animation: 10s linear 0s reverse none infinite animate;
+    z-index: 0;
 }
 
-@-webkit-keyframes animate {
-	from {background-position:0 0;}
-	to {background-position: 500px 0;}
+@media (prefers-color-scheme: dark) {
+    body {
+        background: rgba(147,208,231,0.78) url('https://les-roseaux.dev/images/triangleVertModerne.png') repeat 0 0;
+        -webkit-animation: 10s linear 0s reverse none infinite animate;
+        -moz-animation: 10s linear 0s reverse none infinite animate;
+        -ms-animation: 10s linear 0s reverse none infinite animate;
+        -o-animation: 10s linear 0s reverse none infinite animate;
+        animation: 10s linear 0s reverse none infinite animate;
+        z-index: 0;
+    }
 }
 
-@-moz-keyframes animate {
-	from {background-position:0 0;}
-	to {background-position: 500px 0;}
+
+body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: center;
+    position: relative;
+    overflow: auto;
 }
 
-@-ms-keyframes animate {
-	from {background-position:0 0;}
-	to {background-position: 500px 0;}
+body canvas {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    position: relative;
+    top: 0;
+    width: 100%;
+    z-index: 0;
 }
 
-@-o-keyframes animate {
-	from {background-position:0 0;}
-	to {background-position: 500px 0;}
+#vines {
+    position: absolute;
+    z-index: 1;
 }
 
-@keyframes animate {
-	from {background-position:0 0;}
-	to {background-position: 500px 0;}
+#leaves {
+    position: absolute;
+    z-index: 2;
 }

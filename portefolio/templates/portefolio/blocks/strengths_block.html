@@ -1,0 +1,17 @@
+<div class="flex flex-row justify-center">
+    <div class="w-full lg:w-3/5 backdrop-blur-md md:rounded-lg
+                lg:rounded-lg p-3 m-3 saturate-180 bg-gradient-to-tr
+                from-light_grad_f to-light_grad_t border-1 border-border_glass flex
+                flex-col justify-start dark:from-dark_grad_f dark:to-dark_grad_t
+                opacity-80 hover:saturate-200 hover:opacity-90 transition-all ease-in-out duration-300">
+        <h2 class="text-3xl text-light_dark font-semibold mb-4 text-center dark:text-dark_dark">Mes Forces</h2>
+        <div class="flex flex-row flex-wrap justify-center items-center">
+            {% for strength in strengths %}
+                <div class="flex items-center m-2 {{ strength.get_lang }}" data-display-type="block">
+                    <i class="{{ strength.icon }} m-2 text-5xl lg:text-3xl text-light_medium dark:text-dark_medium"></i>
+                    <span class="font-oswald text-4xl lg:text-2xl text-light_dark dark:text-dark_dark">{{ strength }}</span>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

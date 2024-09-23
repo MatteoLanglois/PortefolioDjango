@@ -1,0 +1,54 @@
+<section id="projets" class="z-10">
+    <div class="flex flex-col flex-wrap w-full">
+        <h1 class="text-8xl lg:text-6xl rounded p-3 w-fit text-light_dark m-20
+        items-center self-center font-bold font-oswald bg-light_background backdrop-blur-md
+        lg:rounded-lg saturate-180 dark:text-dark_dark dark:bg-dark_background">Mes projets</h1>
+    </div>
+    {% for project in projects %}
+        {% if project.visible %}
+            <div class="flex flex-row items-center content-center justify-center w-full {{ project.get_lang }}" data-display-type="flex">
+                <div class="w-full lg:w-4/5 backdrop-blur-md lg:rounded-lg
+                 p-3 m-3 saturate-180 bg-gradient-to-tr
+                from-light_grad_f to-light_grad_t border-1 border-border_glass flex
+                flex-col lg:flex-row justify-start dark:from-dark_grad_f dark:to-dark_grad_t opacity-80 hover:saturate-200 hover:opacity-90 transition-all ease-in-out duration-300">
+                    <div class="w-full lg:w-2/5 h-115 lg:h-80 overflow-hidden flex items-center justify-center opacity-100">
+                        {% if project.image %}
+                            <img src="{{ project.image.url }}" class="w-full h-full
+                            rounded-lg opacity-100 lg:mr-5 mb-5 lg:mb-0 overflow-hidden object-cover"
+                                 alt="Image du projet {{ project.title }}">
+                        {% endif %}
+                    </div>
+                    <div class="flex flex-col w-full lg:w-3/5">
+                        <h2 class="text-6xl lg:text-2xl text-light_dark font-semibold mb-5 dark:text-dark_dark">
+                            {% if project.hasLink %}
+                                <a class="text-6xl mt-2 lg:text-3xl lg:mt-0" href="{{ project.link }}">
+                                    <i class="fa-brands fa-github"></i>
+                                </a>
+                            {% endif %}
+                            {{ project.title }}
+                        </h2>
+                        <p class="text-light_text dark:text-dark_text font-light text-4xl mb-5 lg:text-xl lg:mb-5 italic">
+                            {{ project.date }}
+                        </p>
+                        <p class="w-full text-4xl mb-4 lg:mb-0 lg:text-xl font-sans text-light_text dark:text-dark_text font-semibold">{{ project.description }}</p>
+                    </div>
+                    <div class="w-full lg:w-3/5 flex flex-row flex-wrap min-h-fit items-center justify-start">
+                        {% for tag in project.get_tags %}
+                            <div class="flex flex-row items-center justify-center space-x-2 m-2">
+                                <div class="flex items-center space-x-4 justify-center w-30 h-30 lg:w-12 lg:h-12
+                                rounded-full border-10 lg:border-4 border-light_light
+                                dark:border-dark_light">
+                                    <i class="{{ tag.icon }} text-6xl lg:text-2xl text-light_medium dark:text-dark_medium">
+                                    </i>
+                                </div>
+                                <span class="text-5xl lg:text-2xl text-light_dark dark:text-dark_dark">
+                                    {{ tag.name }}
+                                </span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+</section>

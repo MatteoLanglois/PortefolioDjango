@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+{% load static %}
+{% load tailwind_tags %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'portefolio/animation.css' %}">
+    <script src="https://kit.fontawesome.com/f0c5800638.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'portefolio/generatePlant.js' %}" defer></script>
+    <title>{% block title %}{% endblock %}</title>
+    {% tailwind_css %}
+</head>
+<style>
+    {% for lang in langs %}
+        .{{ lang.lang }} {
+            display: none;
+        }
+    {% endfor %}
+
+    .fr  {
+        display: flex;
+    }
+</style>
+<body class="w-full h-auto">
+<canvas id="leaves" width="100%" height="100%"></canvas>
+<canvas id="vines" width="100%" height="100%"></canvas>
+<nav class="px-4 lg:px-6 py-8 flex flex-wrap justify-between items-center
+                w-full z-10 font-oswald flex-col lg:flex-row text-light_dark dark:text-dark_dark">
+    <a class="self-center text-8xl lg:text-6xl whitespace-nowrap text-dark bg-background backdrop-blur-md
+                saturate-180 rounded-full p-5" href="{% url "portefolio:index" %}">
+        Mon Portefolio
+    </a>
+    <div class="flex lg:flex-row flex-col justify-evenly items-center lg:order-2
+     text-6xl lg:text-4xl mt-4 lg:mt-0 bg-background backdrop-blur-md
+                saturate-180 p-5 rounded-full">
+        <div class="px-12 lg:px-6 mb-4">
+            <a href="{% url 'portefolio:Projects' %}">
+                <i class="fas fa-tasks mr-2"></i>Projets
+            </a>
+        </div>
+        <div class="px-12 lg:px-6 mb-4">
+            <a href="{% url 'portefolio:index' %}#profil">
+                <i class="fas fa-address-card mr-2"></i>Profil
+            </a>
+        </div>
+        <div class="px-12 lg:px-6 mb-4">
+            {% for lang in langs %}
+                <a onclick="changeLanguage('{{ lang.lang }}', '{{ lang.get_prev.lang }}')"
+                class="{{ lang.lang }}" data-display-type="block">
+                    <i class="fas fa-language mr-2"></i>{{ lang.name }}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</nav>
+{% block content %}{% endblock %}
+<script>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.4.1/dist/flowbite.min.js"></script>
+<script src="{% static 'portefolio/changeLanguage.js' %}"></script>
+</body>
+</html>

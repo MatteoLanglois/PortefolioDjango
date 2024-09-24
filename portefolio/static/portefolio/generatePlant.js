@@ -1,4 +1,13 @@
-let y;
+// Constants
+const CANVAS_WIDTH = window.innerWidth * 3;
+const CANVAS_HEIGHT = window.innerHeight * 3;
+const MAX_LINE_WIDTH = 300;
+const MIN_LENGTH = 100;
+const MAX_LENGTH = 400;
+const ITERATIONS = 25;
+const SPACE = CANVAS_HEIGHT / 5;
+
+// Canvas setup
 const canvas = document.getElementById('vines');
 const context = canvas.getContext('2d');
 const canvasb = document.getElementById('leaves');
@@ -6,36 +15,30 @@ const contextb = canvasb.getContext('2d');
 const leaves = [];
 
 // Set explicit dimensions
-canvas.width = window.innerWidth * 3;
-canvas.height = window.innerHeight * 3;
-canvasb.width = window.innerWidth * 3;
-canvasb.height = window.innerHeight * 3;
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
+canvasb.width = CANVAS_WIDTH;
+canvasb.height = CANVAS_HEIGHT;
 
-// Rest of your code...
+// Gradient setup
 const isDarkMode = () =>
     globalThis.matchMedia?.("(prefers-color-scheme:dark)").matches ?? false;
 
-const gradientLeaves = contextb.createLinearGradient(0, 0, canvas.width, canvas.height);
-const gradientLeaves2 = contextb.createLinearGradient(0, 0, canvas.width, canvas.height);
+const gradientLeaves = contextb.createLinearGradient(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 const gradientVines = context.createRadialGradient(0, 0, 500, 0, 0, 1000);
 const gradientPistil = contextb.createRadialGradient(0, 0, 0, 0, 0, 100);
 
 if (!isDarkMode()) {
-    gradientVines.addColorStop(0, '#045c07'); // Vert clair au début
-    gradientVines.addColorStop(0.5, '#09791e'); // Vert au milieu
+    gradientVines.addColorStop(0, '#045c07');
+    gradientVines.addColorStop(0.5, '#09791e');
     gradientVines.addColorStop(1, '#0cd440');
-} else {
-    gradientVines.addColorStop(0, '#012803'); // Vert clair au début
-    gradientVines.addColorStop(0.5, '#064613'); // Vert au milieu
-    gradientVines.addColorStop(1, '#11772b');
-}
-
-
-if (!isDarkMode()) {
     gradientLeaves.addColorStop(0, "rgba(162,48,4,0.97)");
     gradientLeaves.addColorStop(0.5, "rgba(201,45,10,0.97)");
     gradientLeaves.addColorStop(1, "rgba(210,20,43,0.97)");
 } else {
+    gradientVines.addColorStop(0, '#012803');
+    gradientVines.addColorStop(0.5, '#064613');
+    gradientVines.addColorStop(1, '#11772b');
     gradientLeaves.addColorStop(0, "rgba(100,160,168,0.97)");
     gradientLeaves.addColorStop(0.5, "rgba(71,188,180,0.97)");
     gradientLeaves.addColorStop(1, "rgba(64,86,204,0.97)");
@@ -48,15 +51,15 @@ gradientPistil.addColorStop(1, "rgba(243,214,146,0.91)");
 
 // Calculate distance from point to line
 function distancePointToLine(point, line) {
-    var L = Math.sqrt(Math.pow(line[1].x - line[0].x, 2) + Math.pow(line[1].y - line[0].y, 2));
-    var r = ((point.x - line[0].x) * (line[1].x - line[0].x) + (point.y - line[0].y) * (line[1].y - line[0].y)) / Math.pow(L, 2);
-    var s = ((line[0].y - point.y) * (line[1].x - line[0].x) - (line[0].x - point.x) * (line[1].y - line[0].y)) / Math.pow(L, 2);
+    const L = Math.hypot(line[1].x - line[0].x, line[1].y - line[0].y);
+    const r = ((point.x - line[0].x) * (line[1].x - line[0].x) + (point.y - line[0].y) * (line[1].y - line[0].y)) / (L * L);
+    const s = ((line[0].y - point.y) * (line[1].x - line[0].x) - (line[0].x - point.x) * (line[1].y - line[0].y)) / (L * L);
     if (r >= 0 && r <= 1) {
         return Math.abs(s) * L;
     } else {
         return Math.min(
-            Math.sqrt(Math.pow(point.x - line[0].x, 2) + Math.pow(point.y - line[0].y, 2)),
-            Math.sqrt(Math.pow(point.x - line[1].x, 2) + Math.pow(point.y - line[1].y, 2))
+            Math.hypot(point.x - line[0].x, point.y - line[0].y),
+            Math.hypot(point.x - line[1].x, point.y - line[1].y)
         );
     }
 }
@@ -103,7 +106,7 @@ function drawLeaf(leaf, direction = 0) {
     }
 
     // Dessiner le centre de la fleur
-    contextb.fillStyle = 'rgba(231,170,29,0.91)';
+    contextb.fillStyle = gradientPistil;
     contextb.beginPath();
     contextb.arc(leaf.x, leaf.y, petalWidth + 10, 0, Math.PI * 2, false);
     contextb.closePath();
@@ -115,7 +118,6 @@ function drawLeaf(leaf, direction = 0) {
 
 // Draw vine
 function drawVinesWithLattice(lattice, seeds, iterations, sort, prune, minLength, maxLength) {
-
     let t = 1;
     const maxLineWidth = 300;
 
@@ -290,13 +292,13 @@ function drawVinesWithLattice(lattice, seeds, iterations, sort, prune, minLength
 // Setup lattice
 const space = canvas.height / 5; // Augmenter cette valeur pour augmenter l'espace entre les lattices
 const lattice = [];
-for (y = -space * 2; y < space * 2; y += space) { // Augmenter l'incrément pour réduire le nombre de lattices
+for (let y = -space * 2; y < space * 2; y += space) { // Augmenter l'incrément pour réduire le nombre de lattices
     lattice.push([
         {x:0, y:y+ canvas.height},
         {x:canvas.width, y:y}
     ]);
 }
-for (y = -space * 2; y < space * 2; y += space) { // Augmenter l'incrément pour réduire le nombre de lattices
+for (let y = -space * 2; y < space * 2; y += space) { // Augmenter l'incrément pour réduire le nombre de lattices
     lattice.push([
         {x:canvas.width, y:y+ canvas.height},
         {x:0, y:y}
@@ -305,7 +307,7 @@ for (y = -space * 2; y < space * 2; y += space) { // Augmenter l'incrément pour
 
 // Draw lattice
 context.strokeStyle = 'rgba(0,0,0,0)';
-context.lineWidth =1;
+context.lineWidth = 1;
 context.lineCap = 'round';
 for (const i in lattice) {
     context.beginPath();
@@ -320,13 +322,12 @@ const minLength = 100;
 const maxLength = 400;
 const iterations = 25;
 
-const step = 300;
-let seeds = [];
+const seeds = [];
 
-// Boucle for pour ajouter des graines
-for (let i = 0; i < canvas.height; i+=step) {
-    // Ajouter la nouvelle graine au tableau seeds
-    seeds.push({x: 1, y: i});
-    seeds.push({x: canvas.width - 1, y: i - 10});
-}
+// Add seeds at the four corners of the canvas
+seeds.push({ x: 0, y: 0 });
+seeds.push({ x: canvas.width - 1, y: 0 });
+seeds.push({ x: 0, y: canvas.height - 1 });
+seeds.push({ x: canvas.width - 1, y: canvas.height - 1 });
+
 drawVinesWithLattice(lattice, seeds, iterations, true, true, minLength, maxLength);

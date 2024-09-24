@@ -7,6 +7,6 @@ function changeLanguage(old_lang, new_lang) {
 
     let newElement = document.getElementsByClassName(new_lang);
     for (let i = 0; i < newElement.length; i++) {
-        newElement[i].style.display = newElement[i].getAttribute("data-display-type");
+         newElement[i].style.display = newElement[i].getAttribute("data-display-type");
     }
 }

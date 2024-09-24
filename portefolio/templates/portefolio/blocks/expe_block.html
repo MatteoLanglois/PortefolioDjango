@@ -7,7 +7,7 @@
     <h2 class="text-6xl lg:text-3xl text-light_dark dark:text-dark_dark font-semibold mb-4 text-center">Mes expériences</h2>
         <ol class="flex flex-col lg:flex-row items-center w-full">
             {% for experience in experiences %}
-                <li class="relative mb-6 h-full w-full {{ experience.get_lang }}" data-display-type="relative">
+                <li class="relative block mb-6 h-full w-full {{ experience.get_lang }}" data-display-type="block">
                     <div class="flex items-center">
                         <div class="z-10 flex items-center justify-center w-16
                         h-16 lg:w-9 lg:h-9 bg-transparent dark:bg-dark_dark

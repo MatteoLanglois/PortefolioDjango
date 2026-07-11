@@ -12,8 +12,7 @@ def get_default_lang() -> int:
 
 
 class Lang(models.Model):
-    lang = models.CharField(max_length=2, blank=True,
-                            null=True)
+    lang = models.CharField(max_length=2, blank=True, null=True)
     name = models.CharField(max_length=200)
 
     def __str__(self) -> str:
@@ -31,8 +30,7 @@ class Project(models.Model):
     title = models.CharField(max_length=200)
     date = models.CharField(max_length=200)
     description = models.TextField()
-    image = models.ImageField(upload_to='projects/', blank=True, null=True,
-                              default='')
+    image = models.ImageField(upload_to="projects/", blank=True, null=True, default="")
     link = models.CharField(max_length=200, blank=True, null=True)
     tags = models.ManyToManyField("Tag", blank=True)
     visible = models.BooleanField(default=True)
@@ -96,7 +94,7 @@ class Skill(models.Model):
         return first_lang.lang if first_lang else None
 
     def got_projects(self) -> bool:
-        return len(Project.objects.filter(languages=self,  visible=True)) != 0
+        return len(Project.objects.filter(languages=self, visible=True)) != 0
 
     def get_projects(self) -> QuerySet:
         projects = Project.objects.filter(languages=self, visible=True)
@@ -144,8 +142,9 @@ class Education(models.Model):
 
 class Experience(models.Model):
     title = models.CharField(max_length=200)
-    icon = models.CharField(max_length=200, default="fa-solid fa-gear",
-                            blank=True, null=True)
+    icon = models.CharField(
+        max_length=200, default="fa-solid fa-gear", blank=True, null=True
+    )
     description = models.TextField()
     date = models.CharField(max_length=200)
     visible = models.BooleanField(default=True)

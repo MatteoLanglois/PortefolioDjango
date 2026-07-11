@@ -20,26 +20,52 @@ body{
     margin:0;
     padding:0;
     background: rgba(147,208,231,0.78) url('https://les-roseaux.dev/images/TriangleBleuTresClair.png') repeat 0 0;
-    -webkit-animation: 10s linear 0s reverse none infinite animate;
-    -moz-animation: 10s linear 0s reverse none infinite animate;
-    -ms-animation: 10s linear 0s reverse none infinite animate;
-    -o-animation: 10s linear 0s reverse none infinite animate;
-    animation: 10s linear 0s reverse none infinite animate;
+    -webkit-animation: 10s linear 0s normal none infinite animate;
+    -moz-animation: 10s linear 0s normal none infinite animate;
+    -ms-animation: 10s linear 0s normal none infinite animate;
+    -o-animation: 10s linear 0s normal none infinite animate;
+    animation: 10s linear 0s normal none infinite animate;
     z-index: 0;
 }
 
 @media (prefers-color-scheme: dark) {
     body {
-        background: rgba(147,208,231,0.78) url('https://les-roseaux.dev/images/triangleVertModerne.png') repeat 0 0;
-        -webkit-animation: 10s linear 0s reverse none infinite animate;
-        -moz-animation: 10s linear 0s reverse none infinite animate;
-        -ms-animation: 10s linear 0s reverse none infinite animate;
-        -o-animation: 10s linear 0s reverse none infinite animate;
-        animation: 10s linear 0s reverse none infinite animate;
+        margin:0;
+        padding:0;
+        background: rgba(147,208,231,0.78) url('http://localhost:8000/media/projects/vtk.png') repeat 0 0;
+        -webkit-animation: 1s linear 0s normal none infinite animate;
+        -moz-animation: 1s linear 0s normal none infinite animate;
+        -ms-animation: 1s linear 0s normal none infinite animate;
+        -o-animation: 1s linear 0s normal none infinite animate;
+        animation: 1s linear 0s normal none infinite animate;
         z-index: 0;
     }
 }
 
+@-webkit-keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
+
+@-moz-keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
+
+@-ms-keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
+
+@-o-keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
+
+@keyframes animate {
+    from {background-position:0 0;}
+    to {background-position: 500px 0;}
+}
 
 body {
     align-items: center;

@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PorteFolioDjango"
+version = "2.0"
+description = "Un projet Django pour mon portefolio"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    {name = "Matteo Langlois"}
+]
+keywords = ["django", "portefolio", "web"]
+
+dependencies = [
+    "Django==6.0.7",
+    "djangorestframework==3.17.1",
+    "numpy==2.5.1",
+    "opencv-python==5.0.0.93",
+    "Pillow==12.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "black==24.3.0",
+    "flake8==7.0.0",
+    "isort==5.13.2",
+    "mypy==1.10.0",
+    "pytest==8.1.1",
+    "pytest-django==4.8.0",
+    "pytest-cov==4.1.0",
+]
+
+[project.urls]
+Homepage = "https://framagit.org/les-roseaux/PorteFolioDjango"
+Documentation = "https://framagit.org/les-roseaux/PorteFolioDjango#readme"
+Repository = "https://framagit.org/les-roseaux/PorteFolioDjango.git"
+Issues = "https://framagit.org/les-roseaux/PorteFolioDjango/-/issues"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["recettes*", "api*", "MyProject*"]
+
+[tool.black]
+line-length = 120
+target-version = ["py310", "py311", "py312"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.venv
+  | migrations
+  | __pycache__
+  | static
+  | media
+)/
+'''
+
+[tool.isort]
+profile = "black"
+line_length = 120
+known_first_party = ["recettes", "api", "MyProject"]
+known_third_party = ["django", "rest_framework", "pytest"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+disallow_untyped_defs = false
+plugins = ["mypy_django_plugin.main"]
+
+[tool.pytest.ini_options]
+python_files = ["tests.py", "test_*.py"]
+addopts = "-v --tb=short"
+DJANGO_SETTINGS_MODULE = "MyProject.settings"
+pythonpath = ["."]
+
+[tool.django-stubs]
+django_settings_module = "MyProject.settings"
+
+[tool.ruff]
+exclude = [
+    "migrations"
+]

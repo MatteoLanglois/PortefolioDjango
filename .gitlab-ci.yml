@@ -1,0 +1,97 @@
+stages:
+  - lint
+  - test
+  - analysis
+
+variables:
+  # Python version
+  PYTHON_VERSION: "3.14"
+  # Dependency-Track API (à configurer dans les variables CI/CD GitLab)
+  DT_PROJECT_NAME: "PortefolioDjango"
+  DT_PROJECT_VERSION: "3.0"
+
+# Cache pour accélérer les jobs
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .venv/
+    - __pycache__/
+    - .pip-cache/
+
+# Job 1: Linting avec Ruff
+ruff:
+  image: python:${PYTHON_VERSION}-slim
+  stage: lint
+  before_script:
+    - python -V
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install ruff
+  script:
+    - echo "Running Ruff linter..."
+    - ruff check . --config=pyproject.toml
+    - ruff format --check .
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_MERGE_REQUEST_ID
+
+# Job 2: Tests Django
+test:
+  image: python:${PYTHON_VERSION}-slim
+  stage: test
+  before_script:
+    - python -V
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - echo "Running Django tests..."
+    - python manage.py test
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_MERGE_REQUEST_ID
+
+# Job 3: Génération du SBOM et push vers Dependency-Track
+generate_sbom:
+  image: python:${PYTHON_VERSION}-slim
+  stage: analysis
+  before_script:
+    - python -V
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+    - pip install cyclonedx-bom
+  script:
+    - echo "Generating SBOM with CycloneDX..."
+    - cyclonedx-py environment > bom.json
+    - base64 bom.json | tr -d '\n' > bom.base64
+    - |
+      cat > payload.json <<EOF
+      {
+          "projectName": "${DT_PROJECT_NAME}",
+          "projectVersion": "${DT_PROJECT_VERSION}",
+          "autoCreate": true,
+          "bom": "$(cat bom.base64)"
+      }
+      EOF
+  artifacts:
+    paths:
+      - bom.json
+      - payload.json
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+    - if: $CI_MERGE_REQUEST_ID
+
+# Job 4: Upload ver dependency track
+dependency-track:
+  image: curlimages/curl:latest
+  stage: analysis
+  needs:
+    - job: generate_sbom
+      artifacts: true
+  script:
+    - echo "Pushing SBOM to Dependency-Track..."
+    - |
+      curl -X PUT "$DT_API_URL/api/v1/bom" \
+      -H "X-Api-Key: $API_KEY" \
+      -H "Content-type: application/json" \
+      -d "@payload.json"
